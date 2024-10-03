@@ -1,0 +1,24 @@
+---
+title: 'Hook Signature'
+description: ''
+---
+
+``` htm
+const useGitHub = ({ username, personalAccessToken }: IUseGitHubHookProps): IUseGitHubHookReturn;
+```
+
+**Parameters**
+
+```username``` **(string):** The GitHub username for which the data is to be fetched. This is a required parameter.
+
+```personalAccessToken``` **(optional, string):** To pass the GitHub generated Personal Access Token for using features like ```getRepositories().pinned()``` etc.
+
+> **ℹ️ Know how to generate a [Personal Access Token on GitHub](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).**
+
+The hook returns an object with the following properties:
+
+```userInfo``` An object containing detailed information about the GitHub user.
+
+```metadata``` An object containing metadata about the GitHub API request.
+
+```getRepositories``` A function that returns an object with methods for filtering and retrieving repository data.
