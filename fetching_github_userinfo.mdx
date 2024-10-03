@@ -1,0 +1,36 @@
+---
+title: 'Fetching GitHub UserInfo'
+description: 'The hook fetches user information from GitHub using the provided ```username```. This data is stored in the ```userInfo state```, which includes details like the **user name, bio, public repository count, and more.** '
+---
+
+
+```htm 
+import React from 'react';
+import { useGitHub } from 'use-github-react/dist/use-github';
+
+const UserProfile = ({ username }) => {
+  const { userInfo } = useGitHub({ username });
+
+  if (!userInfo) return <p>Loading...</p>;
+
+  return (
+    <div>
+      <h1>{userInfo.name}</h1>
+      <p>{userInfo.bio}</p>
+      <p>Public Repositories: {userInfo.public_repos}</p>
+    </div>
+  );
+};
+
+export default UserProfile;
+```
+
+### <ins>Do's</ins>
+
+Do ensure the ```username``` prop is passed correctly to the hook.
+
+Do handle the loading state gracefully as data is fetched asynchronously.
+
+### <ins>Don'ts</ins>
+
+Don't assume ```userInfo``` will always contain data. Always check if it's null before accessing properties.

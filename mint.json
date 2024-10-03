@@ -17,7 +17,15 @@
       "pages": [
         "introduction",
         "installation",
-        "hook"
+        "hook",
+        "fetching_github_userinfo",
+        "fetching_github_repositories",
+        "filtering_repositories_by_language",
+        "getting_the_top_n_repositories",
+        "fetching_pinned_repositories",
+        "language_distribution",
+        "handling_errors",
+        "conclusion"
       ]
     }
   ],
