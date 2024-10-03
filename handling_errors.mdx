@@ -1,0 +1,25 @@
+---
+title: 'Handling Errors'
+description: 'The hook is designed to handle errors that might occur during API requests. It logs these errors to the console, allowing developers to debug any issues easily.'
+---
+
+```
+// Inside a custom component
+const { userInfo, metadata } = useGitHub({ username: 'nonexistent-user' });
+
+useEffect(() => {
+  if (!userInfo) {
+    console.error('User not found. Check the username or try again later.');
+  }
+}, [userInfo]);
+```
+
+**<ins>Do's</ins>**
+
+Do check for errors in the console when API requests fail.
+
+Do provide user-friendly messages in the UI when data cannot be fetched.
+
+**<ins>Don'ts</ins>**
+
+Don't ignore error handling; always consider how to manage failures gracefully.
