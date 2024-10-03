@@ -1,0 +1,181 @@
+---
+title: 'Language Distribution'
+description: ''
+---
+
+The hook supports a ```languageDistribution``` feature that provides insights into the programming languages used across a user's repositories. This feature is useful for visualizing or analyzing the diversity and frequency of languages in a user's public GitHub repositories.
+
+**<ins>How it works</ins>**
+
+The ```languageDistribution``` function calculates the percentage of repositories written in each language. The hook aggregates the languages used across all repositories and returns a percentage breakdown of the usage.
+
+## Using ```all()```
+
+Fetch the language distribution across all repositories for a user.
+
+```htm
+import React from 'react';
+import { useGitHub } from './useGitHub';
+
+const LanguageDistribution = ({ username }) => {
+  const { getRepositories } = useGitHub({ username });
+  const languageDist = getRepositories().all.languageDistribution();
+
+  return (
+    <div>
+      <h2>Language Distribution</h2>
+      <ul>
+        {languageDist.map((lang) => (
+          <li key={lang.language}>
+            {lang.language}: {(lang.percentage * 100).toFixed(2)}%
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+```
+
+By leveraging this feature, you can provide your users with a way to showcase their most important repositories directly in your application.
+
+
+### Using ```withLanguages([LANGUAGES])```
+
+Fetch the language distribution for repositories that are written in a specific set of languages.
+
+```
+import React from 'react';
+import { useGitHub } from './useGitHub';
+
+const SelectedLanguagesDistribution = ({ username }) => {
+  const { getRepositories } = useGitHub({ username });
+  const languageDist = getRepositories()
+    .withLanguage(['javascript', 'typescript'])
+    .languageDistribution();
+
+  return (
+    <div>
+      <h2>Language Distribution (Filtered by JavaScript, TypeScript)</h2>
+      <ul>
+        {languageDist.map((lang) => (
+          <li key={lang.language}>
+            {lang.language}: {(lang.percentage * 100).toFixed(2)}%
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default SelectedLanguagesDistribution;
+```
+
+### Using ```pinned()```
+
+Fetch the language distribution for the pinned repositories.
+
+```
+import React from 'react';
+import { useGitHub } from './useGitHub';
+
+const PinnedRepositoriesLanguageDistribution = ({ username }) => {
+  const { getRepositories } = useGitHub({ username, personalAccessToken: 'YOUR_PERSONAL_ACCESS_TOKEN' });
+  const languageDist = getRepositories().pinned.languageDistribution();
+
+  return (
+    <div>
+      <h2>Language Distribution (Pinned Repositories)</h2>
+      <ul>
+        {languageDist.map((lang) => (
+          <li key={lang.language}>
+            {lang.language}: {(lang.percentage * 100).toFixed(2)}%
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default PinnedRepositoriesLanguageDistribution;
+```
+
+### Using ```top(NUMBER)```
+
+Fetch the language distribution for the top N repositories, sorted by the most recently updated.
+
+```
+import React from 'react';
+import { useGitHub } from './useGitHub';
+
+const TopRepositoriesLanguageDistribution = ({ username, topN }) => {
+  const { getRepositories } = useGitHub({ username });
+  const languageDist = getRepositories().top(topN).languageDistribution();
+
+  return (
+    <div>
+      <h2>Language Distribution (Top {topN} Repositories)</h2>
+      <ul>
+        {languageDist.map((lang) => (
+          <li key={lang.language}>
+            {lang.language}: {(lang.percentage * 100).toFixed(2)}%
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default TopRepositoriesLanguageDistribution;
+```
+
+**<ins>Do's</ins>**
+
+Do use the ```languageDistribution()``` method to get an array of objects, each containing a ```language``` and its corresponding ```percentage``` of repositories.
+
+Do handle the fact that some repositories may not have a language specified.
+
+**<ins>Don'ts</ins>**
+
+Don't assume every repository will have a ```language``` defined. Some may not have a language field, and these are ignored in the calculation.
+
+Don't forget to account for repositories that use languages not explicitly recognized by GitHub.
+
+## Returned Data Format
+
+The language distribution data returned by ```languageDistribution()``` will have the following structure:
+
+```language:``` The programming language (e.g., JavaScript, Python).
+
+```percentage:``` The percentage of repositories written in this language.
+
+
+**<ins>Example response</ins>**
+
+```
+[
+  {
+    "language": "javascript",
+    "percentage": 0.4
+  },
+  {
+    "language": "typescript",
+    "percentage": 0.3
+  },
+  {
+    "language": "python",
+    "percentage": 0.2
+  }
+]
+```
+
+In this example, 40% of the user's repositories are written in JavaScript, 30% in TypeScript, and 20% in Python.
+
+## Use Cases
+
+**All repositories:** To see the overall language diversity for the user.
+
+**Filtered by specific languages:** To focus on repositories written in certain programming languages.
+
+**Pinned repositories:** To understand the language usage in the user's most significant projects.
+
+**Top N repositories:** To get language statistics for the most active or recently updated repositories.
