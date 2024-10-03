@@ -1,0 +1,36 @@
+---
+title: 'Getting the Top N Repositories'
+description: 'The ```getRepositories``` function also provides a ```top``` method to retrieve the top N repositories based on their order in the list (sorted by update time).'
+---
+
+```htm
+import React from 'react';
+import { useGitHub } from 'use-github-react/dist/use-github';
+
+const TopRepositories = ({ username, count }) => {
+  const { getRepositories } = useGitHub({ username });
+  const topRepos = getRepositories().top(count);
+
+  return (
+    <ul>
+      {topRepos.map((repo) => (
+        <li key={repo.id}>
+          <a href={repo.html_url}>{repo.name}</a>
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+export default TopRepositories;
+```
+
+**<ins>Do's</ins>**
+
+Do pass a valid number to the ```top``` method to get the desired number of repositories.
+
+Do handle cases where there are fewer repositories than the requested top N.
+
+**<ins>Don'ts</ins>**
+
+Do not assume that the user has enough repositories to meet your request for the top N.
