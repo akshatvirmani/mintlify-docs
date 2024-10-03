@@ -1,0 +1,89 @@
+---
+title: 'Fetching pinned repositories'
+description: ''
+---
+
+In addition to fetching regular repositories, the ```useGitHub``` hook can now retrieve a user's pinned repositories using GitHub's GraphQL API. This feature allows you to display repositories that a user has specifically chosen to highlight on their GitHub profile.
+
+The hook fetches the first six pinned repositories for the provided ```username``` and most importantly, the ```personalAccessToken```. The pinned repositories are returned through the ```getRepositories``` method, using the ```pinned()``` function.
+
+
+```htm
+import React from 'react';
+import { useGitHub } from 'use-github-react/dist/use-github';
+
+const PinnedRepositories = ({ username }) => {
+  const { getRepositories } = useGitHub({ 
+    username, 
+    personalAccessToken: process.env.GITHUB_PERSONAL_ACCESS_TOKEN 
+  });
+  const pinnedRepos = getRepositories().pinned();
+
+  return (
+    <div>
+      <h2>Pinned Repositories</h2>
+      <ul>
+        {pinnedRepos.map((repo) => (
+          <li key={repo.id}>
+            <a href={repo.html_url}>{repo.name}</a>
+            {repo.description && <p>{repo.description}</p>}
+            <p>⭐ {repo.stargazers_count} | 🍴 {repo.forks_count}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default PinnedRepositories;
+```
+
+
+**<ins>Do's</ins>**
+
+Make sure to use ```personalAccessToken``` inside the hook configuration. Use [env variables](https://create-react-app.dev/docs/adding-custom-environment-variables/) for storing your personal access token.
+
+Do use the ```getRepositories().pinned()``` method to retrieve pinned repositories, which will return an array of the user's pinned repositories.
+
+Do check for any available ```description```,```stargazers_count```, and ```forks_count``` to enrich the repository data displayed.
+
+**<ins>Don'ts</ins>**
+
+Do not assume every pinned repository will have a description or primary language. Always check before rendering these properties.
+
+Do not forget to handle loading states or potential API errors when fetching the data.
+
+
+**<ins>Returned Data Format</ins>**
+
+The pinned repositories data returned will have the following structure:
+
+```id``` The unique identifier for the repository.
+
+```name``` The name of the repository.
+
+```description``` A brief description of the repository (if available).
+
+```html_url``` The URL to the repository on GitHub.
+
+```stargazers_count``` The number of stars the repository has received.
+
+```forks_count``` The number of forks the repository has.
+
+```language``` The primary programming language used in the repository (if available).
+
+**<ins>Example Data</ins>**
+
+```htm 
+{
+  "id": "123456",
+  "name": "my-cool-repo",
+  "description": "This is a description of the repository.",
+  "html_url": "https://github.com/username/my-cool-repo",
+  "stargazers_count": 50,
+  "forks_count": 10,
+  "language": "javascript"
+}
+```
+
+By leveraging this feature, you can provide your users with a way to showcase their most important repositories directly in your application.
