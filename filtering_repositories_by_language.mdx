@@ -1,0 +1,36 @@
+---
+title: 'Filtering Repositories by Language'
+description: 'The ```getRepositories``` function provides a method ```withLanguage``` that allows you to filter repositories based on specific programming languages. '
+---
+
+```htm
+import React from 'react';
+import { useGitHub } from 'use-github-react/dist/use-github';
+
+const PythonRepositories = ({ username }) => {
+  const { getRepositories } = useGitHub({ username });
+  const pythonRepos = getRepositories().withLanguage(['python']);
+
+  return (
+    <ul>
+      {pythonRepos.map((repo) => (
+        <li key={repo.id}>
+          <a href={repo.html_url}>{repo.name}</a>
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+export default PythonRepositories;
+```
+
+**<ins>Do's</ins>**
+
+Do pass an array of valid programming languages (in lowercase) to the ```withLanguage``` method.
+
+Do check the filtered list for content before rendering.
+
+**<ins>Don'ts</ins>**
+
+Don't use incorrect casing for language names. The ```withLanguage``` method expects lowercase language names.
