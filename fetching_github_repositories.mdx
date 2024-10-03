@@ -1,0 +1,38 @@
+---
+title: 'Fetching GitHub Repositories'
+description: 'The hook also retrieves a list of repositories for the specified user. This data is stored in the ```repositories``` state, which is an array of objects representing each repository.'
+---
+
+```htm
+import React from 'react';
+import { useGitHub } from 'use-github-react/dist/use-github';
+
+const UserRepositories = ({ username }) => {
+  const { getRepositories } = useGitHub({ username });
+  const repositories = getRepositories().all();
+
+  return (
+    <ul>
+      {repositories.map((repo) => (
+        <li key={repo.id}>
+          <a href={repo.html_url}>{repo.name}</a>
+          {repo.language && <span> - {repo.language}</span>}
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+export default UserRepositories;
+```
+
+
+**<ins>Do's</ins>**
+
+Do use the ```getRepositories().all()``` method to retrieve the full list of repositories.
+
+Do iterate over the repositories array to display each repository's information.
+
+**<ins>Don'ts</ins>**
+
+Don't assume the list of repositories will always contain data. Always check if the array is empty.
