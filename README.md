@@ -1,3 +1,5 @@
+# This Documentation is the part of [UseGithub](https://github.com/yashsehgal/use-github-react).
+
 # Mintlify Starter Kit
 
 Click on `Use this template` to copy the Mintlify starter kit. The starter kit contains examples including
